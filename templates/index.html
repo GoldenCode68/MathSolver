@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathSolver | حل معادله</title>
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}">
+    <!-- MathJax: نمایش فرمول‌های ریاضی -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']]
+            },
+            chtml: {
+                scale: 1.15
+            }
+        };
+    </script>
+    <script defer
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+
+</head>
+
+<body>
+<div class="container">
+
+    <header>
+        <div class="brand">MATH SOLVER / 01</div>
+        <h1>حل معادله</h1>
+        <div class="subtitle">
+            ساده، دقیق و هوشمند
+        </div>
+    </header>
+
+    <form method="POST" id="solverForm">
+
+        <div class="degree-select">
+            <select name="degree" id="degree">
+                <option value="1"
+                    {% if degree == '1' %}selected{% endif %}>
+                    معادله درجه اول
+                </option>
+
+                <option value="2"
+                    {% if degree == '2' %}selected{% endif %}>
+                    معادله درجه دوم
+                </option>
+            </select>
+        </div>
+
+        <div class="equation" id="equation">
+
+            <input
+                class="coefficient"
+                type="text"
+                inputmode="decimal"
+                name="a"
+                id="a"
+                placeholder="a"
+                value="{{ a|default('') }}"
+                aria-label="ضریب a"
+                autocomplete="off"
+                required>
+
+            <span class="math-symbol" id="power">
+                x
+            </span>
+
+            <span class="math-symbol hidden" id="square">
+                ²
+            </span>
+
+            <span class="math-symbol" id="plus">+</span>
+
+            <input
+                class="coefficient"
+                type="text"
+                inputmode="decimal"
+                name="b"
+                id="b"
+                placeholder="b"
+                value="{{ b|default('') }}"
+                aria-label="ضریب b"
+                autocomplete="off"
+                required>
+
+            <span class="math-symbol" id="xTerm">x</span>
+
+            <span class="math-symbol">=</span>
+
+            <input
+                class="coefficient hidden"
+                type="text"
+                inputmode="decimal"
+                name="c"
+                id="c"
+                placeholder="c"
+                value="{{ c|default('') }}"
+                aria-label="ضریب c"
+                autocomplete="off">
+
+            <span class="math-symbol" id="zero">0</span>
+        </div>
+
+        <div class="action-row">
+            <div class="line"></div>
+
+            <button type="submit" class="calculate">
+                محاسبه
+            </button>
+
+            <div class="line"></div>
+        </div>
+
+    </form>
+
+    {% if result %}
+    <section class="result-section">
+
+        <div class="result-title" id="equationPreview"></div>
+
+        <div class="result-card">
+            <div class="result-label">
+                نتیجه محاسبات
+            </div>
+
+            {% for item in result %}
+                <div class="result-value {% if 'خطا:' in item %}error{% endif %}">
+                    {{ item }}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="keyboard">
+        <div class="keyboard-head">
+            <h3>صفحه‌کلید</h3>
+            <span>ابتدا یک ضریب را انتخاب کن</span>
+        </div>
+
+        <div class="keys">
+            <button type="button" class="key" data-key="7">7</button>
+            <button type="button" class="key" data-key="8">8</button>
+            <button type="button" class="key" data-key="9">9</button>
+            <button type="button" class="key special" data-key="back">⌫</button>
+
+            <button type="button" class="key" data-key="4">4</button>
+            <button type="button" class="key" data-key="5">5</button>
+            <button type="button" class="key" data-key="6">6</button>
+            <button type="button" class="key special" data-key="-">−</button>
+
+            <button type="button" class="key" data-key="1">1</button>
+            <button type="button" class="key" data-key="2">2</button>
+            <button type="button" class="key" data-key="3">3</button>
+            <button type="button" class="key special" data-key=".">.</button>
+
+            <button type="button" class="key" data-key="0">0</button>
+            <button type="button" class="key" data-key="clear">AC</button>
+            <button type="button" class="key special" data-key="next">بعدی ←</button>
+            <button type="button" class="key special" data-key="enter">↵</button>
+        </div>
+
+        <div class="hint">
+            با کیبورد دستگاه هم می‌توانی ضرایب را وارد کنی.
+            برای محاسبه Enter را بزن.
+        </div>
+    </section>
+
+    <footer>
+        MATH SOLVER · ساخته شده با Python & Flask
+    </footer>
+</div>
+
+<script>
+    const degree = document.getElementById('degree');
+    const a = document.getElementById('a');
+    const b = document.getElementById('b');
+    const c = document.getElementById('c');
+
+    const square = document.getElementById('square');
+    const xTerm = document.getElementById('xTerm');
+
+    function updateEquation() {
+        const second = degree.value === '2';
+
+        square.classList.toggle('hidden', !second);
+        xTerm.classList.toggle('hidden', second);
+        c.classList.toggle('hidden', !second);
+
+        if (second) {
+            square.textContent = '²';
+        }
+
+        c.required = second;
+    }
+
+    degree.addEventListener('change', updateEquation);
+    updateEquation();
+
+    const fields = [a, b, c];
+    let activeField = a;
+
+    fields.forEach(field => {
+        field.addEventListener('focus', () => {
+            activeField = field;
+        });
+    });
+
+    function getActiveFields() {
+        return degree.value === '2'
+            ? [a, b, c]
+            : [a, b];
+    }
+
+    function nextField() {
+        const available = getActiveFields();
+        let index = available.indexOf(activeField);
+
+        index = (index + 1) % available.length;
+        activeField = available[index];
+        activeField.focus();
+    }
+
+    document.querySelectorAll('[data-key]').forEach(button => {
+        button.addEventListener('click', () => {
+            const key = button.dataset.key;
+
+            if (key === 'enter') {
+                document.getElementById('solverForm').requestSubmit();
+                return;
+            }
+
+            if (key === 'next') {
+                nextField();
+                return;
+            }
+
+            activeField.focus();
+
+            if (key === 'clear') {
+                activeField.value = '';
+                return;
+            }
+
+            if (key === 'back') {
+                const start = activeField.selectionStart;
+                const end = activeField.selectionEnd;
+                const value = activeField.value;
+
+                if (start === end && start > 0) {
+                    activeField.value =
+                        value.slice(0, start - 1) + value.slice(end);
+
+                    activeField.setSelectionRange(start - 1, start - 1);
+                } else {
+                    activeField.setRangeText('', start, end, 'end');
+                }
+
+                return;
+            }
+
+            const start = activeField.selectionStart;
+            const end = activeField.selectionEnd;
+
+            activeField.setRangeText(
+                key,
+                start,
+                end,
+                'end'
+            );
+        });
+    });
+</script>
+</body>
+</html>

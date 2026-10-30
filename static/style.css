@@ -1,0 +1,313 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary: #679b9a;
+            --dark: #006b68;
+            --light: #f2f5f1;
+            --border: #dfe6dc;
+            --text: #333a38;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #fff;
+            color: var(--text);
+            font-family: 'Vazirmatn', sans-serif;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 920px;
+            margin: auto;
+            padding: 65px 24px 80px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 65px;
+        }
+
+        .brand {
+            color: var(--primary);
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: clamp(25px, 4vw, 36px);
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0 0 12px;
+        }
+
+        .subtitle {
+            color: #929b98;
+            font-size: 14px;
+        }
+
+        .equation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            direction: ltr;
+            margin: 55px 0 42px;
+            flex-wrap: wrap;
+        }
+
+        .coefficient {
+            width: 120px;
+            height: 68px;
+            border: 2px solid #9acbca;
+            border-radius: 15px;
+            background: #fafcf9;
+            color: var(--dark);
+            text-align: center;
+            font: 500 28px 'Vazirmatn', sans-serif;
+            outline: none;
+            transition: .2s;
+        }
+
+        .coefficient:focus {
+            border-color: var(--dark);
+            box-shadow: 0 0 0 4px #006b6814;
+        }
+
+        .math-symbol {
+            font-family: Georgia, serif;
+            color: var(--dark);
+            font-size: 48px;
+            font-weight: 400;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .degree-select {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        select {
+            font-family: inherit;
+            color: var(--dark);
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .action-row {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            margin: 50px 0;
+        }
+
+        .line {
+            flex: 1;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .calculate {
+            border: none;
+            border-radius: 50px;
+            background: var(--primary);
+            color: white;
+            font: 600 21px 'Vazirmatn', sans-serif;
+            padding: 15px 48px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .calculate:hover {
+            background: var(--dark);
+            transform: translateY(-2px);
+        }
+
+        .calculate:active {
+            transform: scale(.98);
+        }
+
+        .result-section {
+            margin-top: 100px;
+        }
+
+        .result-title {
+            direction: ltr;
+            text-align: left;
+            color: var(--dark);
+            font-size: 30px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+        }
+
+        .result-card {
+            background: var(--light);
+            border: 2px solid #e1e7dd;
+            border-radius: 28px;
+            padding: 28px 32px;
+            margin-bottom: 16px;
+        }
+
+        .result-label {
+            font-size: 13px;
+            color: #8c9690;
+            margin-bottom: 12px;
+        }
+
+        .result-value {
+            font-size: 24px;
+            color: var(--text);
+            overflow-wrap: anywhere;
+            line-height: 2;
+        }
+
+        .keyboard {
+            margin-top: 55px;
+            padding: 24px;
+            background: #fafbf9;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+        }
+
+        .keyboard-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .keyboard-head h3 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .keyboard-head span {
+            color: #9ba39e;
+            font-size: 12px;
+        }
+
+        .keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            direction: ltr;
+        }
+
+        .key {
+            min-height: 55px;
+            border: 1px solid #e0e7df;
+            border-radius: 13px;
+            background: white;
+            color: var(--dark);
+            font: 500 21px 'Vazirmatn', sans-serif;
+            cursor: pointer;
+            transition: .15s;
+        }
+
+        .key:hover {
+            background: #eaf3f0;
+        }
+
+        .key:active {
+            transform: scale(.96);
+        }
+
+        .key.special {
+            background: #e7f0ed;
+        }
+
+        .hint {
+            text-align: center;
+            color: #9ba39e;
+            font-size: 12px;
+            margin-top: 22px;
+        }
+
+        .error {
+            color: #b13d3d;
+        }
+
+        footer {
+            text-align: center;
+            color: #a0a7a3;
+            font-size: 12px;
+            margin-top: 75px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 35px 18px 50px;
+            }
+
+            header {
+                margin-bottom: 45px;
+            }
+
+            .equation {
+                gap: 8px;
+                margin: 40px 0;
+            }
+
+            .coefficient {
+                width: 75px;
+                height: 57px;
+                font-size: 22px;
+                border-radius: 12px;
+            }
+
+            .math-symbol {
+                font-size: 32px;
+            }
+
+            .action-row {
+                gap: 12px;
+                margin: 35px 0;
+            }
+
+            .calculate {
+                padding: 12px 30px;
+                font-size: 17px;
+            }
+
+            .result-section {
+                margin-top: 65px;
+            }
+
+            .result-title {
+                font-size: 24px;
+            }
+
+            .result-card {
+                padding: 20px;
+                border-radius: 20px;
+            }
+
+            .result-value {
+                font-size: 19px;
+            }
+
+            .keyboard {
+                padding: 16px;
+            }
+
+            .keys {
+                gap: 7px;
+            }
+
+            .key {
+                min-height: 49px;
+            }
+        }
